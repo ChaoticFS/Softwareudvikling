@@ -38,3 +38,5 @@ app.MapPost("/api/frugt/", (Frugt frugt) =>
 app.Run(); // Kør webapplikationen
 
 record Frugt(string name); // Definer en rekordtype "Frugt" med en enkelt felt: name
+
+//husk at tilføje følgende i browseren: /api/frugt
