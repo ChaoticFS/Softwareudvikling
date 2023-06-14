@@ -9,3 +9,4 @@ app.MapGet("/api/hello/{name}/{age}", (string name, int age) => new { Message = 
 
 app.Run(); // Kør webapplikationen
 
+// husk at tilføje /api/hello i browseren
