@@ -1,0 +1,90 @@
+﻿@page "/thread/{id}"
+
+@using Notit.Shared.Models;
+@using Notit.Client.Services;
+@using Thread = Notit.Shared.Models.Thread;
+
+<PageTitle>Notit</PageTitle>
+
+<style>
+    div.contents {
+        background-color: #f2f0eb;
+        width: 600px;
+        border: 2px solid #452d3d;
+        padding: 10px;
+        margin-top: 20px;
+    }
+</style>
+
+@if (ThreadModel == null)
+{
+    <p><em>Det tager tid makker</em></p>
+}
+else
+{
+    <div class="contents">
+        <h4>@ThreadModel.Content</h4>
+        <p><strong>User: @ThreadModel.User, Votes: @(ThreadModel.Score)</strong></p>
+    </div>
+
+    <div class="contents">
+        <h4>Comments</h4>
+        <table>
+            <tr>
+                <th>User</th>
+                <th>Comment</th>
+                <th colspan="3">Votes</th>
+            </tr>
+            @foreach (var comment in ThreadModel.Comments)
+            {
+                <tr>
+                    <td>@comment.User</td>
+                    <td>@comment.CommentId</td>
+                    <td>@(comment.Score)</td>
+                    <td><button @onclick="() => Upvote(comment.CommentId)">Upvote</button></td>
+                    <td><button @onclick="() => Downvote(comment.CommentId)">Downvote</button></td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <CreateComment ThreadId=@ThreadId></CreateComment>
+}
+
+@code {
+
+    [Inject]
+    public CommentService commentService { get; set; }
+
+    [Inject]
+    public ThreadService threadService { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
+    public int ThreadId { get { return int.Parse(Id); } }
+    public Thread ThreadModel { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ThreadModel = await threadService.GetThread(ThreadId);
+
+        Console.WriteLine(ThreadModel.ToString());
+
+        var comments = await commentService.GetComments(ThreadId);
+        foreach (var item in comments)
+        {
+            ThreadModel.Comments.Add(item);
+        }
+    }
+    private async void Upvote(long id)
+    {
+        ThreadModel.Score++;
+        await threadService.PutThread(ThreadModel);
+    }
+
+    private async void Downvote(long id)
+    {
+        ThreadModel.Score--;
+        await threadService.PutThread(ThreadModel);
+    }
+}
