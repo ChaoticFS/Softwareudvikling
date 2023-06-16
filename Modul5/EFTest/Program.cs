@@ -6,7 +6,7 @@ using (var db = new TaskContext())
 
     // Create
     Console.WriteLine("Indsæt et nyt task");
-    User user = new User(1, "Asger", "asn@mail.dk");
+    User user = new User(1, "Axel", "Axel@mail.dk");
     db.Add(user);
     db.Add(new TodoTask("Design ERD", "planning", user, false));
 
