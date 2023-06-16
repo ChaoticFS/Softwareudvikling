@@ -1,0 +1,103 @@
+Projektet skal være en konsol
+
+I projektet skal du installere pakker til Entity Framework:
+
+$ dotnet add package Microsoft.EntityFrameworkCore.SQLite
+$ dotnet add package Microsoft.EntityFrameworkCore.Design
+$ dotnet add package Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore
+2. Lav en simpel model i projektet
+En model beskriver det data du har i projektet, og består af nogle klasser.
+
+Du skal nu lave en mappe der hedder Model og to filer:
+
+TodoTask.cs
+TaskContext.cs
+TodoTask er vores model, og TaskContext er en klasse der bruges til at lave en forbindelse til databasen.
+
+Filernes indhold skal du kopiere fra disse skabeloner:
+
+// TodoTask.cs
+namespace Model
+{
+    public class TodoTask
+    {
+        public TodoTask(string text, bool done) {
+            this.Text = text;
+            this.Done = done;
+        }
+        public long TodoTaskId { get; set; }
+        public string? Text { get; set; }
+        public bool Done { get; set; }
+    }
+}
+// TaskContext.cs
+using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+
+namespace Model
+{
+    public class TaskContext : DbContext
+    {
+        public DbSet<TodoTask> Tasks { get; set; }
+        public string DbPath { get; }
+
+        public TaskContext()
+        {
+            DbPath = "bin/TodoTask.db";
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+            => options.UseSqlite($"Data Source={DbPath}");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TodoTask>().ToTable("Tasks");
+        }
+    }
+}
+3. Ændringer til selve programmet
+Du skal lave ændringer i Program.cs som tester de nye klasser. Kopier følgende kode ind i filen:
+
+using Model;
+
+using (var db = new TaskContext())
+{
+    Console.WriteLine($"Database path: {db.DbPath}.");
+    
+    // Create
+    Console.WriteLine("Indsæt et nyt task");
+    db.Add(new TodoTask("En opgave der skal løses", false));
+    db.SaveChanges();
+
+    // Read
+    Console.WriteLine("Find det sidste task");
+    var lastTask = db.Tasks
+        .OrderBy(b => b.TodoTaskId)
+        .Last();
+    Console.WriteLine($"Text: {lastTask.Text}");
+}
+Hvis du kører koden nu, får du SQL-fejl, da databasen ikke er helt på plads endnu. Den opretter vi i næste trin.
+
+4. Opret databasen
+Før man kan bruge en database, skal den oprettes. Med Entity Framework gøres ved ved at lave en migration.
+
+Udfør kommandoerne:
+
+$ dotnet ef migrations add InitialCreate
+$ dotnet ef database update
+Navnet “InitialCreate” er valgfrit, men passer godt til den første migration. Migrationerne navngives efter deres indhold - lige som med commits i git.
+
+Hvis første kommando giver fejl, er det typisk en compile-fejl i selve projektkoden. Se fejlen med kommandoen:
+
+$ dotnet build
+Ret eventuelle fejl, kør kommandoerne igen. Start derefter programmet op med dotnet run og se om det virker.
+
+5. Kig i databasen
+Kør programmet nogle flere gange, så du får lidt mere data i databasen.
+
+Herefter skal du finde et værktøj til at kigge i selve database-filen.
+
+I filen TaskContext.cs kan du se at der står “options.UseSqlite”, så det er sqlite vi har gang i. Databasen-filen ligger i dit projekt - under folderen bin/.
+
+Prøv at kigge i filen med værktøjet DB Browser for SQLiteLinks to an external site. som du kan finde på https://sqlitebrowser.org/Links to an external site., eller du kan måske finde en god vscode-extension til formålet?
