@@ -9,7 +9,17 @@
         /// <param name="tal">Det tal der skal findes.</param>
         /// <returns></returns>
         public static int FindNumberLinear(int[] array, int tal) {
-            // TODO: Implement!
+            int count = 0;
+            
+            foreach (int i in array)
+            {
+                if (i == tal)
+                {
+                    return count;
+                }
+                count++;
+            }
+
             return -1;
         }
         /// <summary>
@@ -19,23 +29,29 @@
         /// <param name="tal">Det tal der skal findes.</param>
         /// <returns></returns>
         public static int FindNumberBinary(int[] array, int tal) {
-            // TODO: Implement!
+            // L M og R = Left, Middle, Right, de bruges til at holde styr på hvor algoritmen i øjeblikket er ved at tjekke i forhold til
+            int L = 0;
+            int R = array.Length - 1;
+
+            while (L <= R)
+            {
+                int M = (L + R) / 2;
+
+                if (array[M] == tal)
+                {
+                    return M;
+                }
+                else if (array[M] < tal) 
+                {
+                    L = M + 1;
+                }
+                else
+                {
+                    R = M - 1;
+                }
+            }
+
             return -1;
-        }
-
-        private static int[] sortedArray { get; set; } =
-            new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-        private static int next = 0;
-
-        /// <summary>
-        /// Indsætter et helt array. Arrayet skal være sorteret på forhånd.
-        /// </summary>
-        /// <param name="sortedArray">Array der skal indsættes.</param>
-        /// <param name="next">Den næste ledige plads i arrayet.</param>
-        public static void InitSortedArray(int[] sortedArray, int next)
-        {
-            Search.sortedArray = sortedArray;
-            Search.next = next;
         }
 
         /// <summary>
@@ -44,10 +60,28 @@
         /// </summary>
         /// <param name="tal">Tallet der skal indsættes</param>
         /// <returns>En kopi af det sorterede array med det nye tal i.</returns>
-        public static int[] InsertSorted(int tal) {
-            // TODO: Implement!
+        public static int[] InsertSorted(int[] array, int tal) {
+            if (array[array.Length - 1] == -1) //tjekker om sidste indeks er -1, altså at der er plads til insertion i arrayet
+            {
+                int currentIndex = 0;
+
+                while (array[currentIndex] != -1)
+                {
+                    currentIndex++;
+                }
+
+                // shuffle elementer til højre indtil tallet er mindre end vores input
+                while (currentIndex > 0 && tal < array[currentIndex - 1])
+                {
+                    array[currentIndex] = array[currentIndex - 1];
+                    currentIndex--;
+                }
+
+                // indsæt tal ved tom plads
+                array[currentIndex] = tal;
+            }
             
-            return sortedArray;
+            return array;
         }
     }
 }

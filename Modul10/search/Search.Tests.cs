@@ -45,46 +45,47 @@ namespace SearchMethods.Tests
         [TestMethod]
         public void TestInsertSorted()
         {
-            Search.InitSortedArray(
-                new int[] { 2, 4, 8, 10, 15, 17, -1, -1, -1, -1 }, 
-                6
-            );
+            int[] newArray = new int[] { 2, 4, 8, 10, 15, 17, -1, -1, -1, -1 };
 
-            int[] newArray = Search.InsertSorted(11);
+            Search.InsertSorted(newArray, 11);
+            foreach (var item in newArray)
+            {
+                Console.WriteLine(item);
+            }
             CollectionAssert.AreEqual(
                 new int[] { 2, 4, 8, 10, 11, 15, 17, -1, -1, -1 },
                 newArray
             );
 
-            newArray = Search.InsertSorted(19);
+            Search.InsertSorted(newArray, 19);
             CollectionAssert.AreEqual(
                 new int[] { 2, 4, 8, 10, 11, 15, 17, 19, -1, -1 },
                 newArray
             );
 
-            newArray = Search.InsertSorted(1);
+            Search.InsertSorted(newArray, 1);
             CollectionAssert.AreEqual(
                 new int[] { 1, 2, 4, 8, 10, 11, 15, 17, 19, -1 },
                 newArray
             );
 
-            newArray = Search.InsertSorted(20);
+            Search.InsertSorted(newArray, 20);
             CollectionAssert.AreEqual(
                 new int[] { 1, 2, 4, 8, 10, 11, 15, 17, 19, 20 },
                 newArray
             );
 
-            //Console.WriteLine("[{0}]", string.Join(", ", newArray));
+            Console.WriteLine("[{0}]", string.Join(", ", newArray));
         }
 
         [TestMethod]
         public void TestInsertSortedFull()
         {
             int[] array = new int[] { 1, 2, 4, 8, 10, 11, 15, 17, 19, 20 };
-            
-            Search.InitSortedArray(array, 10);
 
-            int[] newArray = Search.InsertSorted(14);
+            int[] newArray = array;
+
+            Search.InsertSorted(newArray, 14);
 
             CollectionAssert.AreEqual(array, newArray);
         }
