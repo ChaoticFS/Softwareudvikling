@@ -7,20 +7,42 @@
         /// </summary>
         /// <param name="array">Det array der søges i.</param>
         /// <param name="tal">Det tal der skal findes.</param>
-        /// <returns></returns>
-        public static int FindNumberLinear(int[] array, int tal) {
-            // TODO: Implement!
-            return -1;
+        /// <returns>Indexet for det fundne tal, eller -1 hvis det ikke findes.</returns>
+        public static int FindNumberLinear(int[] array, int tal)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == tal)
+                    return i;
+            }
+            return -1; // Returnerer -1 hvis tallet ikke findes
         }
+
         /// <summary>
         /// Finder tallet i arrayet med en binær søgning.
         /// </summary>
-        /// <param name="array">Det array der søges i.</param>
+        /// <param name="array">Det array der søges i. Arrayet skal være sorteret i stigende rækkefølge.</param>
         /// <param name="tal">Det tal der skal findes.</param>
-        /// <returns></returns>
-        public static int FindNumberBinary(int[] array, int tal) {
-            // TODO: Implement!
-            return -1;
+        /// <returns>Indexet for det fundne tal, eller -1 hvis det ikke findes.</returns>
+        public static int FindNumberBinary(int[] array, int tal)
+        {
+            int left = 0;
+            int right = array.Length - 1;
+
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+
+                if (array[mid] == tal)
+                    return mid;
+
+                if (array[mid] < tal)
+                    left = mid + 1;
+                else
+                    right = mid - 1;
+            }
+
+            return -1; // Returnerer -1 hvis tallet ikke findes
         }
 
         private static int[] sortedArray { get; set; } =
@@ -44,10 +66,37 @@
         /// </summary>
         /// <param name="tal">Tallet der skal indsættes</param>
         /// <returns>En kopi af det sorterede array med det nye tal i.</returns>
-        public static int[] InsertSorted(int tal) {
-            // TODO: Implement!
-            
-            return sortedArray;
+        public static int[] InsertSorted(int tal)
+        {
+            int[] newArray = new int[next + 1]; // Opretter en ny kopi af arrayet med en størrelse, der rummer det nye tal
+
+            int i = 0;
+            int j = 0;
+
+            // Kopierer elementer fra det oprindelige array til det nye array, indtil det rigtige sted at indsætte tallet er nået
+            while (i < next && sortedArray[i] < tal)
+            {
+                newArray[j] = sortedArray[i];
+                i++;
+                j++;
+            }
+
+            // Indsætter det nye tal på det rigtige sted
+            newArray[j] = tal;
+            j++;
+
+            // Kopierer resten af elementerne fra det oprindelige array til det nye array
+            while (i < next)
+            {
+                newArray[j] = sortedArray[i];
+                i++;
+                j++;
+            }
+
+            sortedArray = newArray; // Opdaterer det oprindelige array med det nye array
+            next++; // Opdaterer den næste ledige plads
+
+            return newArray; // Returnerer det nye array
         }
     }
 }
