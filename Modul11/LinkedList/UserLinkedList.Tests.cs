@@ -5,6 +5,9 @@ namespace LinkedList.Tests
     [TestClass]
     public class LinkedList_Tests
     {
+        /*TestAddFirst: Denne metode tester, om AddFirst-metoden
+        fungerer korrekt ved at tilføje en bruger som det første element i listen og derefter kontrollere,
+        om den første bruger i listen er den samme som den tilføjede bruger.*/
         [TestMethod]
         public void TestAddFirst()
         {
@@ -22,7 +25,10 @@ namespace LinkedList.Tests
             // Tester om den første bruger i listen er den samme som den tilføjede bruger
             Assert.AreEqual(kristian, list.GetFirst());
         }
-
+        /*
+        TestRemoveFirst: Denne metode tester, om RemoveFirst-metoden fungerer korrekt ved at
+        tilføje flere brugere til listen og derefter fjerne den første bruger.
+        Testen kontrollerer, om den fjernede bruger er den forventede.*/
         [TestMethod]
         public void TestRemoveFirst()
         {
@@ -43,6 +49,9 @@ namespace LinkedList.Tests
             Assert.AreEqual(torill, list.RemoveFirst());
         }
 
+        /*TestCountUsers: Denne metode tester, om CountUsers-metoden returnerer det korrekte
+        antal brugere i listen.Den tilføjer flere brugere til listen og kontrollerer,
+        om antallet af brugere er det forventede.*/
         [TestMethod]
         public void TestCountUsers()
         {
@@ -62,7 +71,10 @@ namespace LinkedList.Tests
             // Tester om antallet af brugere i listen er det forventede antal
             Assert.AreEqual(3, list.CountUsers());
         }
-
+        /*
+        TestRemoveUser: Denne metode tester, om RemoveUser-metoden fungerer korrekt ved at tilføje flere brugere
+        til listen og derefter fjerne en bruger.
+        Testen kontrollerer, om antallet af brugere i listen er korrekt efter fjernelsen.*/
         [TestMethod]
         public void TestRemoveUser()
         {
@@ -92,6 +104,9 @@ namespace LinkedList.Tests
             Assert.AreEqual(3, list.CountUsers());
         }
 
+        /*TestGetLast: Denne metode tester, om GetLast-metoden returnerer 
+        den korrekte sidste bruger i listen.Den tilføjer flere brugere til listen og
+        kontrollerer, om den sidste bruger i listen er den forventede.*/
         [TestMethod]
         public void TestGetLast()
         {
