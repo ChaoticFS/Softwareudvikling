@@ -11,17 +11,72 @@ public class HashSetLinearProbing : HashSet {
     }
 
     public bool Contains(Object x) {
-        // TODO: Implement!
+        int h = HashValue(x);
+        int index = h;
+
+        while (buckets[index] != null)
+        {
+            if (buckets[index].Equals(x))
+            {
+                return true;
+            }
+
+            index = (index + 1) % buckets.Length;
+            if (index == h)
+            {
+                break;
+            }
+        }
+
         return false;
     }
 
-    public bool Add(Object x) {      
-        // TODO: Implement!
-        return false;
+    public bool Add(Object x) {
+        if (Contains(x))
+        {
+            return false;
+        }
+
+        int h = HashValue(x);
+        int index = h;
+        int count = 0;
+
+        while (buckets[index] != null && !buckets[index].Equals(State.DELETED))
+        {
+            index = (index + 1) % buckets.Length;
+            count++;
+            if (buckets.Length == count)
+            {
+                return false;
+            }
+        }
+
+        buckets[index] = x;
+        currentSize++;
+
+        return true;
     }
 
     public bool Remove(Object x) {
-        // TODO: Implement!
+        int h = HashValue(x);
+        int index = h;
+
+        while (buckets[index] != null)
+        {
+            if (buckets[index].Equals(x))
+            {
+                buckets[index] = State.DELETED;
+                currentSize--;
+                return true;
+            }
+
+            index = (index + 1) % buckets.Length;
+            if (index == h)
+            {
+                break;
+            }
+        }
+
         return false;
     }
 
