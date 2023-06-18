@@ -7,57 +7,51 @@
         /// </summary>
         /// <param name="array">Det array der søges i.</param>
         /// <param name="tal">Det tal der skal findes.</param>
-        /// <returns>Indexet for det fundne tal, eller -1 hvis det ikke findes.</returns>
-        public static int FindNumberLinear(int[] array, int tal)
-        {
-            for (int i = 0; i < array.Length; i++)
+        /// <returns></returns>
+        public static int FindNumberLinear(int[] array, int tal) {
+            int count = 0;
+            
+            foreach (int i in array)
             {
-                if (array[i] == tal)
-                    return i;
+                if (i == tal)
+                {
+                    return count;
+                }
+                count++;
             }
-            return -1; // Returnerer -1 hvis tallet ikke findes
-        }
 
+            return -1;
+        }
         /// <summary>
         /// Finder tallet i arrayet med en binær søgning.
         /// </summary>
-        /// <param name="array">Det array der søges i. Arrayet skal være sorteret i stigende rækkefølge.</param>
+        /// <param name="array">Det array der søges i.</param>
         /// <param name="tal">Det tal der skal findes.</param>
-        /// <returns>Indexet for det fundne tal, eller -1 hvis det ikke findes.</returns>
-        public static int FindNumberBinary(int[] array, int tal)
-        {
-            int left = 0;
-            int right = array.Length - 1;
+        /// <returns></returns>
+        public static int FindNumberBinary(int[] array, int tal) {
+            // L M og R = Left, Middle, Right, de bruges til at holde styr på hvor algoritmen i øjeblikket er ved at tjekke i forhold til
+            int L = 0;
+            int R = array.Length - 1;
 
-            while (left <= right)
+            while (L <= R)
             {
-                int mid = (left + right) / 2;
+                int M = (L + R) / 2;
 
-                if (array[mid] == tal)
-                    return mid;
-
-                if (array[mid] < tal)
-                    left = mid + 1;
+                if (array[M] == tal)
+                {
+                    return M;
+                }
+                else if (array[M] < tal) 
+                {
+                    L = M + 1;
+                }
                 else
-                    right = mid - 1;
+                {
+                    R = M - 1;
+                }
             }
 
-            return -1; // Returnerer -1 hvis tallet ikke findes
-        }
-
-        private static int[] sortedArray { get; set; } =
-            new int[] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-        private static int next = 0;
-
-        /// <summary>
-        /// Indsætter et helt array. Arrayet skal være sorteret på forhånd.
-        /// </summary>
-        /// <param name="sortedArray">Array der skal indsættes.</param>
-        /// <param name="next">Den næste ledige plads i arrayet.</param>
-        public static void InitSortedArray(int[] sortedArray, int next)
-        {
-            Search.sortedArray = sortedArray;
-            Search.next = next;
+            return -1;
         }
 
         /// <summary>
@@ -66,37 +60,28 @@
         /// </summary>
         /// <param name="tal">Tallet der skal indsættes</param>
         /// <returns>En kopi af det sorterede array med det nye tal i.</returns>
-        public static int[] InsertSorted(int tal)
-        {
-            int[] newArray = new int[next + 1]; // Opretter en ny kopi af arrayet med en størrelse, der rummer det nye tal
-
-            int i = 0;
-            int j = 0;
-
-            // Kopierer elementer fra det oprindelige array til det nye array, indtil det rigtige sted at indsætte tallet er nået
-            while (i < next && sortedArray[i] < tal)
+        public static int[] InsertSorted(int[] array, int tal) {
+            if (array[array.Length - 1] == -1) //tjekker om sidste indeks er -1, altså at der er plads til insertion i arrayet
             {
-                newArray[j] = sortedArray[i];
-                i++;
-                j++;
+                int currentIndex = 0;
+
+                while (array[currentIndex] != -1)
+                {
+                    currentIndex++;
+                }
+
+                // shuffle elementer til højre indtil tallet er mindre end vores input
+                while (currentIndex > 0 && tal < array[currentIndex - 1])
+                {
+                    array[currentIndex] = array[currentIndex - 1];
+                    currentIndex--;
+                }
+
+                // indsæt tal ved tom plads
+                array[currentIndex] = tal;
             }
-
-            // Indsætter det nye tal på det rigtige sted
-            newArray[j] = tal;
-            j++;
-
-            // Kopierer resten af elementerne fra det oprindelige array til det nye array
-            while (i < next)
-            {
-                newArray[j] = sortedArray[i];
-                i++;
-                j++;
-            }
-
-            sortedArray = newArray; // Opdaterer det oprindelige array med det nye array
-            next++; // Opdaterer den næste ledige plads
-
-            return newArray; // Returnerer det nye array
+            
+            return array;
         }
     }
 }
