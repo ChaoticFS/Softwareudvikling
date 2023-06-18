@@ -92,3 +92,17 @@ namespace CustomerApi.Controllers
         public string Type { get; set; }
     }
 }
+
+
+/*
+ * Koden definerer en ASP.NET Core Web API-kontroller, CustomersController, som håndterer kundeoplysninger. Her er de vigtigste kommentarer:
+
+customers: Dette er en simuleret liste over kunder, der normalt ville blive erstattet af en database. Den indeholder tre eksempelkunder.
+GetCustomers(): En GET-anmodning til /api/customers returnerer alle kunderne i listen som svar.
+GetCustomer(int id): En GET-anmodning til /api/customers/{id} returnerer kunden med den specificerede id.
+PostCustomer([FromBody] Customer customer): En POST-anmodning til /api/customers tilføjer en ny kunde til listen baseret på det medfølgende customer-objekt.
+DeleteCustomer(int id): En DELETE-anmodning til /api/customers/{id} fjerner kunden med den specificerede id fra listen.
+GetEmailsByType(string type): En GET-anmodning til /api/emails/{type} returnerer en liste over e-mailadresser for kunder af en bestemt type.
+Main(string[] args): Dette er indgangspunktet for applikationen, hvor en webhost oprettes og konfigureres til at køre CustomersController ved hjælp af ASP.NET Core.
+Derudover er der en modelklasse Customer, der repræsenterer kundedata med egenskaber som Id, Name, Email og Type.
+*/
